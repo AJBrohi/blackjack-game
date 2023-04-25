@@ -5,8 +5,8 @@
 ## The Jack/Queen/King all count as 10.
 ## The Ace can count as 11 or 1.
 ## Use the following list as the deck of cards:
-## cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-## The cards in the list have equal probability of being drawn.
+## card = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "A": [1, 11], "K": 10, "Q": 10, "J": 10}
+## The cards in the dictionary have equal probability of being drawn.
 ## Cards are not removed from the deck as they are drawn.
 ## The computer is the dealer.
 
@@ -14,20 +14,21 @@
 
 import random, os, art
 
-card = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "A": [1, 11], "K": 10, "Q": 10, "J": 10}
+cards = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "A": [1, 11], "K": 10, "Q": 10, "J": 10}
 
 def card_distribution(score):
-    random_card = random.choice(list(card.keys()))
+    random_card = random.choice(list(cards.keys()))
     if score < 11 and random_card == "A":
-        score += card[random_card][1]
+        score += cards[random_card][1]
     elif score >= 11 and random_card == "A":
-        score += card[random_card][0]
+        score += cards[random_card][0]
     else:
-        score += card[random_card]
+        score += cards[random_card]
     
     return random_card, score
 
 def print_cards(final, user_score, pc_score, user_inhand, pc_inhand):
+    print()
     if final:
         print(f"Your Final Cards: {user_inhand}, Current Score: {user_score}")
         print(f"PC's Final Cards: {pc_inhand}, PC's Score: {pc_score}")
@@ -63,8 +64,6 @@ def blackjack():
     pc_inhand = []
     pc_score = 0
     
-    clear = lambda: os.system('cls')
-    
     should_play = True
     while should_play:
         for _ in range(2):
@@ -99,4 +98,7 @@ def blackjack():
         else:
             should_play = False
             print("Thank you for playing the game. Hope you liked it. Goodbye!")
+
+clear = lambda: os.system('cls')
+
 blackjack()
