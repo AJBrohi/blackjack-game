@@ -34,6 +34,27 @@ def print_cards(final, user_score, pc_score, user_inhand, pc_inhand):
     else:
         print(f"Your Cards: {user_inhand}, Current Score: {user_score}")
         print(f"PC's Card: {pc_inhand[0]}")
+        
+def compare_score(user, pc):
+    if user == 21 and pc == 21 or user == pc:
+        print(art.draw)        
+    elif pc == 21:
+        print("PC got the Blackjack")
+        print(art.lose)
+    elif user == 21:
+        print("You got the Blackjack")
+        print(art.win)
+    elif user > 21:
+        print("You went over. PC Win")
+        print(art.lose)
+    elif pc > 21:
+        print("PC went over")
+        print(art.win)
+    elif user > pc:
+        print(art.win)
+    else:
+        print("PC Win")
+        print(art.lose)
 
 def blackjack():
     print(art.logo)
@@ -47,40 +68,30 @@ def blackjack():
     should_play = True
     while should_play:
         for _ in range(2):
-            user_card, user_score = card_distribution(score=user_score)
+            user_card, user_score = card_distribution(user_score)
             user_inhand.append(user_card)
             
-            pc_card, pc_score = card_distribution(score=pc_score)
+            pc_card, pc_score = card_distribution(pc_score)
             pc_inhand.append(pc_card)
         
-        print_cards(False, user_score=user_score, pc_score=pc_score, user_inhand=user_inhand, pc_inhand=pc_inhand)
+        print_cards(False, user_score, pc_score, user_inhand, pc_inhand)
         
         while user_score < 21:
             choice = input("Type 'Y' to HIT another card or 'N' to PASS - ").lower()
-            # choice = 'y'
             if choice == 'y':
-                user_card, user_score = card_distribution(score=user_score)
+                user_card, user_score = card_distribution(user_score)
                 user_inhand.append(user_card)
             else:
                 while pc_score <= 16:
-                    pc_card, pc_score = card_distribution(score=pc_score)
+                    pc_card, pc_score = card_distribution(pc_score)
                     pc_inhand.append(pc_card)
                 break
-            print_cards(False, user_score=user_score, pc_score=pc_score, user_inhand=user_inhand, pc_inhand=pc_inhand)
+            print_cards(False, user_score, pc_score, user_inhand, pc_inhand)
 
-        print_cards(True, user_score=user_score, pc_score=pc_score, user_inhand=user_inhand, pc_inhand=pc_inhand)
-
-        if pc_score > 21:
-            print("PC went over. You Win")
-        elif user_score > 21:
-            print("You went over. PC Win")
-        elif user_score == 21 and pc_score == 21 or user_score == pc_score:
-            print("Draw!")
-        elif pc_score > user_score:
-            print("PC Win")
-        elif user_score > pc_score:
-            print("You Win")
-            
+        print_cards(True, user_score, pc_score, user_inhand, pc_inhand)
+        
+        compare_score(user_score, pc_score)
+        
         round_choice = input("Type 'Y' to play another round or type 'N' to exit - ").lower()        
         if round_choice == 'y':
             clear()
